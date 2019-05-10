@@ -12,6 +12,9 @@ func (srv *AppServer) SetupRoutes() error {
 			Name("status").
 			Methods("GET")
 
+		srv.router.HandleFunc("/status/", srv.HandleStatus()).Queries("format", "{format:(?:json|yaml)}").
+			Name("status").
+			Methods("GET")
 		// ADD YOUR OWN ROUTES HERE
 	})
 	return err
