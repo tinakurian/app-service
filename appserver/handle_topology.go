@@ -50,13 +50,15 @@ func (srv *AppServer) HandleTopology() http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		namespace := "default"
-		host := "https://api.tkurian16.devcluster.openshift.com:6443"
-		bearerToken := "7DdF7VrdYl2F9MrR95J_v0Z0pJj1qh6tMZrSzbn_Uno"
+		params := r.URL.Query()
+
+		namespace := params["namespace"][0]
+		host := params["host"][0]
+		bearerToken := params["token"][0]
 
 		openshiftAPIConfig := getOpenshiftAPIConfig(host, bearerToken)
 
-		k := kubeclient.NewKubeClient()
+		k := kubeclient.NewKubeClient(&openshiftAPIConfig)
 		listOptions := metav1.ListOptions{}
 		onGetWatchError := func(err error) {
 			fmt.Errorf("Error is %+v", err)

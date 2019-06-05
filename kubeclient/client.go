@@ -12,15 +12,14 @@ type KubeClient struct {
 	//OcRouteClient ocrouteclient.RouteV1Interface
 }
 
-func NewKubeClient() *KubeClient {
+func NewKubeClient(config *rest.Config) *KubeClient {
 	var err error
 	kc := new(KubeClient)
-	config := getKubeConfig()
-	kc.CoreClient, err = kubernetes.NewForConfig(&config)
+	kc.CoreClient, err = kubernetes.NewForConfig(config)
 	if err != nil {
 		panic(err)
 	}
-	kc.OcAppsClient, err = ocappsclient.NewForConfig(&config)
+	kc.OcAppsClient, err = ocappsclient.NewForConfig(config)
 	if err != nil {
 		panic(err)
 	}
